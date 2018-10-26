@@ -16,25 +16,33 @@ class App extends Component {
     const user = e.target.elements.username.value;
     console.log(user);
   
-    //using axios lib (promise vased fetch)
-    axios.get( `https://api.github.com/users/${user}`)
-    .then((resp) => {
-      // Callback FUnction
-      console.log(resp);
+    if(user){
 
-      //get a property (public repos) from this responseand store
-      const repositories = resp.data.public_repos; 
-      console.log(repositories);
+      //using axios lib (promise vased fetch)
+      axios.get( `https://api.github.com/users/${user}`)
+      .then((resp) => {
+        // Callback FUnction
+        console.log(resp);
 
-      // Now, setting the state using fetch data
-      this.setState({repos: repositories})
+        //get a property (public repos) from this responseand store
+        const repositories = resp.data.public_repos; 
+        console.log(repositories);
 
-      ///QUICK_TIP: if propertyand value are same {repos: repos} can be written as 
-      /// this.setState({repos}) --> Shorthand
+        // Now, setting the state using fetch data
+        this.setState({repos: repositories})
 
+        ///QUICK_TIP: if propertyand value are same {repos: repos} can be written as 
+        /// this.setState({repos}) --> Shorthand
 
-    })
+    },
+    (error) => { console.log(error) }
+    )
 
+    }
+    else{
+      return;
+    }
+    
   }
 
   render() {
@@ -47,6 +55,8 @@ class App extends Component {
         {
           // {} opens a javascript expression inside JSX
           this.state.repos ? <p>Number of Repository : {this.state.repos} </p> : <p>Please Enter a Username</p>
+        
+          // So, Ternry expression shows if not a null value, renders the paragraph. Else renders the one after : ()
         }
       </div>
     );
